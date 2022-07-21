@@ -31,12 +31,36 @@ const insertPlanetSurfaceQuery = async (data) => {
 
 const getCurrentDigitQuery = async (data) => {
   const pool = await mysql.createPool(config.mysql);
-  const [[getDigit]] = await pool.query(`call SP_GetCurrentDigit(?)`, [data]);
-  return getDigit;
+  console.log(data, "data Pi_Digit");
+  const [[[Pi_Digit]]] = await pool.query(`call SP_GetCurrentDigit(?)`, [data]);
+  console.log(Pi_Digit, "Pi_Digit");
+  return Pi_Digit;
+};
+
+const updatePlanetController = async (data) => {
+  const {
+    name,
+    radius,
+    diameter,
+    digit,
+    piValueApproximation,
+    planetCircumference,
+  } = data;
+  const pool = await mysql.createPool(config.mysql);
+  await pool.query(`call SP_UpdatePlanet(?,?,?,?,?,?)`, [
+    name,
+    radius,
+    diameter,
+    planetCircumference,
+    digit,
+    piValueApproximation,
+  ]);
+  return;
 };
 
 module.exports = {
   selectAllResultQuery,
   insertPlanetSurfaceQuery,
   getCurrentDigitQuery,
+  updatePlanetController,
 };
