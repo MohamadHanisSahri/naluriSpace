@@ -35,7 +35,6 @@ const insertPlanetController = async (req, res, next) => {
       console.log(calculateResult, "calculateResult");
       await dataModel.insertPlanetSurfaceQuery({
         name: planetData.name,
-        radius: planetData.radius,
         diameter: planetData.diameter,
         planetCircumference,
         digit: planetData.digit,
@@ -60,9 +59,9 @@ const insertPlanetController = async (req, res, next) => {
     );
     const { planetCircumference, piValueApproximation } =
       calculationByIncrementDigitResult;
-    await dataModel.updatePlanetController({
+    await dataModel.updatePlanetQuery({
+      id: planetData.id,
       name: planetData.name,
-      radius: planetData.radius,
       diameter: planetData.diameter,
       planetCircumference,
       digit: planetData.digit,
@@ -79,11 +78,16 @@ const insertPlanetController = async (req, res, next) => {
 
 const insertPlanetIncrementController = async (req, res, next) => {
   const planetData = req.body;
+  console.log(planetData, "insert controller");
   let planetExist = false;
+  let planetExistId;
+  let planetExistDigit;
 
   try {
     planetExist = await dataModel.getCurrentDigitQuery(planetData.name);
     console.log(planetExist, "planetExist");
+    planetExistDigit = planetExist.Pi_Digit;
+    planetExistId = planetExist.Planet_ID;
   } catch (error) {
     logger.error(error);
     console.log(error.message);
@@ -93,15 +97,14 @@ const insertPlanetIncrementController = async (req, res, next) => {
     try {
       const calculateResult = await calculateCircumference({
         diameter: planetData.diameter,
-        digit: planetData.digit,
+        digit: 1,
       });
       const { planetCircumference, piValueApproximation } = calculateResult;
       await dataModel.insertPlanetSurfaceQuery({
         name: planetData.name,
-        radius: planetData.radius,
         diameter: planetData.diameter,
         planetCircumference,
-        digit: planetData.digit,
+        digit: 1,
         piValueApproximation,
       });
       res.status(200).send("successfully saved new data");
@@ -113,16 +116,16 @@ const insertPlanetIncrementController = async (req, res, next) => {
   }
 
   try {
-    const incrDigit = +planetExist.Pi_Digit + 1;
+    const incrDigit = +planetExistDigit + 1;
     const calculationByIncrementDigitResult = await calculateCircumference({
       diameter: planetData.diameter,
       digit: +incrDigit,
     });
     const { planetCircumference, piValueApproximation } =
       calculationByIncrementDigitResult;
-    await dataModel.updatePlanetController({
+    await dataModel.updatePlanetQuery({
+      id: planetExistId,
       name: planetData.name,
-      radius: planetData.radius,
       diameter: planetData.diameter,
       planetCircumference,
       digit: incrDigit,
@@ -133,6 +136,42 @@ const insertPlanetIncrementController = async (req, res, next) => {
     logger.error(error);
     console.log(error.message);
     res.status(400).send(error.message);
+  }
+};
+
+const updatePlanetController = async (req, res, next) => {
+  try {
+    const planetData = req.body;
+    const calculationByIncrementDigitResult = await calculateCircumference({
+      diameter: planetData.diameter,
+      digit: planetData.digit,
+    });
+    const { planetCircumference, piValueApproximation } =
+      calculationByIncrementDigitResult;
+    await dataModel.updatePlanetQuery({
+      id: planetData.id,
+      name: planetData.name,
+      diameter: planetData.diameter,
+      planetCircumference,
+      digit: planetData.digit,
+      piValueApproximation,
+    });
+    res.status(200).send({ successMessage: "Succesfully update planet data!" });
+  } catch (error) {
+    logger.error(error);
+    res.status(400).send({ errorMessage: "Failed to update planet data!" });
+  }
+};
+
+const deletePlanetController = async (req, res, next) => {
+  try {
+    const planetData = req.params.planetId;
+    console.log(planetData, "planetData delete");
+    await dataModel.deletePlanetQuery(planetData);
+    res.status(200).send({ successMessage: "Successfully delete planet!" });
+  } catch (error) {
+    logger.error(error);
+    res.status(400).send({ errorMessage: "Failed to delete planet!" });
   }
 };
 
@@ -166,7 +205,7 @@ const calculateCircumference = async (data) => {
 
 // const updatePlanet = async (data) => {
 //   try {
-//     await dataModel.updatePlanetController(data);
+//     await dataModel.updatePlanetQuery(data);
 
 //   }
 // }
@@ -175,4 +214,6 @@ module.exports = {
   selectAllResultController,
   insertPlanetIncrementController,
   insertPlanetController,
+  updatePlanetController,
+  deletePlanetController,
 };

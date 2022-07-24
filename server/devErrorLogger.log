@@ -1,0 +1,88 @@
+2022-07-24 22:25:12 [31merror[39m: Error: [BigNumber Error] DECIMAL_PLACES not an integer: NaN
+    at intCheck (/Users/mac/Development/naluriSpace/server/node_modules/bignumber.js/bignumber.js:2834:13)
+    at Function.BigNumber.config.BigNumber.set (/Users/mac/Development/naluriSpace/server/node_modules/bignumber.js/bignumber.js:441:13)
+    at computePI (/Users/mac/Development/naluriSpace/server/computation/pi_digitComputation.js:15:13)
+    at calculateCircumference (/Users/mac/Development/naluriSpace/server/controller/index.js:166:41)
+    at insertPlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:30:37)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-24 22:25:12 [31merror[39m: TypeError: Cannot destructure property 'planetCircumference' of 'calculateResult' as it is undefined.
+    at insertPlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:34:15)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-24 22:32:17 [31merror[39m: ReferenceError: planetCircumference is not defined
+    at updatePlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:141:7)
+    at Layer.handle [as handle_request] (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/route.js:144:13)
+    at Route.dispatch (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/route.js:114:3)
+    at Layer.handle [as handle_request] (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/index.js:346:12)
+    at next (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/index.js:280:10)
+    at Function.handle (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/index.js:175:3)
+    at router (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/index.js:47:12)
+2022-07-24 22:45:35 [31merror[39m: Error: [BigNumber Error] DECIMAL_PLACES not an integer: NaN
+    at intCheck (/Users/mac/Development/naluriSpace/server/node_modules/bignumber.js/bignumber.js:2834:13)
+    at Function.BigNumber.config.BigNumber.set (/Users/mac/Development/naluriSpace/server/node_modules/bignumber.js/bignumber.js:441:13)
+    at computePI (/Users/mac/Development/naluriSpace/server/computation/pi_digitComputation.js:15:13)
+    at calculateCircumference (/Users/mac/Development/naluriSpace/server/controller/index.js:172:41)
+    at updatePlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:138:53)
+    at Layer.handle [as handle_request] (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/route.js:144:13)
+    at Route.dispatch (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/route.js:114:3)
+    at Layer.handle [as handle_request] (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/mac/Development/naluriSpace/server/node_modules/express/lib/router/index.js:284:15
+2022-07-24 22:45:35 [31merror[39m: TypeError: Cannot destructure property 'planetCircumference' of 'calculationByIncrementDigitResult' as it is undefined.
+    at updatePlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:142:13)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-24 22:52:08 [31merror[39m: Error: Incorrect number of arguments for PROCEDURE naluri_space.SP_UpdatePlanet; expected 5, got 6
+    at PromisePool.query (/Users/mac/Development/naluriSpace/server/node_modules/mysql2/promise.js:341:22)
+    at Object.updatePlanetQuery (/Users/mac/Development/naluriSpace/server/model/index.js:43:14)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async updatePlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:146:5)
+2022-07-24 22:52:17 [31merror[39m: Error: Incorrect number of arguments for PROCEDURE naluri_space.SP_UpdatePlanet; expected 5, got 6
+    at PromisePool.query (/Users/mac/Development/naluriSpace/server/node_modules/mysql2/promise.js:341:22)
+    at Object.updatePlanetQuery (/Users/mac/Development/naluriSpace/server/model/index.js:43:14)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async updatePlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:146:5)
+2022-07-24 22:52:37 [31merror[39m: Error: Incorrect number of arguments for PROCEDURE naluri_space.SP_UpdatePlanet; expected 5, got 6
+    at PromisePool.query (/Users/mac/Development/naluriSpace/server/node_modules/mysql2/promise.js:341:22)
+    at Object.updatePlanetQuery (/Users/mac/Development/naluriSpace/server/model/index.js:43:14)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async updatePlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:146:5)
+2022-07-24 23:37:46 [31merror[39m: Error: Incorrect integer value: ':15' for column 'p_Planet_ID' at row 1
+    at PromisePool.query (/Users/mac/Development/naluriSpace/server/node_modules/mysql2/promise.js:341:22)
+    at Object.deletePlanetQuery (/Users/mac/Development/naluriSpace/server/model/index.js:56:14)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async deletePlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:164:5)
+2022-07-24 23:39:54 [31merror[39m: Error: Incorrect integer value: ':15' for column 'p_Planet_ID' at row 1
+    at PromisePool.query (/Users/mac/Development/naluriSpace/server/node_modules/mysql2/promise.js:341:22)
+    at Object.deletePlanetQuery (/Users/mac/Development/naluriSpace/server/model/index.js:56:14)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async deletePlanetController (/Users/mac/Development/naluriSpace/server/controller/index.js:165:5)
+2022-07-24 23:41:50 [31merror[39m: Error: [BigNumber Error] DECIMAL_PLACES not an integer: NaN
+    at intCheck (/Users/mac/Development/naluriSpace/server/node_modules/bignumber.js/bignumber.js:2834:13)
+    at Function.BigNumber.config.BigNumber.set (/Users/mac/Development/naluriSpace/server/node_modules/bignumber.js/bignumber.js:441:13)
+    at computePI (/Users/mac/Development/naluriSpace/server/computation/pi_digitComputation.js:15:13)
+    at calculateCircumference (/Users/mac/Development/naluriSpace/server/controller/index.js:187:41)
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:93:37)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-24 23:41:50 [31merror[39m: TypeError: Cannot destructure property 'planetCircumference' of 'calculateResult' as it is undefined.
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:97:15)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-24 23:43:33 [31merror[39m: Error: Out of range value for column 'p_Planet_Diameter' at row 1
+    at PromisePool.query (/Users/mac/Development/naluriSpace/server/node_modules/mysql2/promise.js:341:22)
+    at Object.updatePlanetQuery (/Users/mac/Development/naluriSpace/server/model/index.js:43:14)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:121:5)
+2022-07-24 23:47:41 [31merror[39m: Error: Out of range value for column 'p_Planet_Diameter' at row 1
+    at PromisePool.query (/Users/mac/Development/naluriSpace/server/node_modules/mysql2/promise.js:341:22)
+    at Object.updatePlanetQuery (/Users/mac/Development/naluriSpace/server/model/index.js:43:14)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:121:5)
+2022-07-24 23:51:56 [31merror[39m: Error: Out of range value for column 'p_Planet_Diameter' at row 1
+    at PromisePool.query (/Users/mac/Development/naluriSpace/server/node_modules/mysql2/promise.js:341:22)
+    at Object.updatePlanetQuery (/Users/mac/Development/naluriSpace/server/model/index.js:43:14)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:121:5)
+2022-07-25 00:08:32 [31merror[39m: TypeError: Cannot read properties of undefined (reading 'Pi_Digit')
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:89:36)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)

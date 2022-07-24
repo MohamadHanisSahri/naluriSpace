@@ -9,18 +9,11 @@ const selectAllResultQuery = async () => {
 };
 
 const insertPlanetSurfaceQuery = async (data) => {
-  const {
-    name,
-    radius,
-    diameter,
-    digit,
-    piValueApproximation,
-    planetCircumference,
-  } = data;
+  const { name, diameter, digit, piValueApproximation, planetCircumference } =
+    data;
   const pool = await mysql.createPool(config.mysql);
-  await pool.query(`call SP_InsertPlanet(?,?,?,?,?,?)`, [
+  await pool.query(`call SP_InsertPlanet(?,?,?,?,?)`, [
     name,
-    radius,
     diameter,
     planetCircumference,
     digit,
@@ -37,10 +30,10 @@ const getCurrentDigitQuery = async (data) => {
   return Pi_Digit;
 };
 
-const updatePlanetController = async (data) => {
+const updatePlanetQuery = async (data) => {
   const {
+    id,
     name,
-    radius,
     diameter,
     digit,
     piValueApproximation,
@@ -48,8 +41,8 @@ const updatePlanetController = async (data) => {
   } = data;
   const pool = await mysql.createPool(config.mysql);
   await pool.query(`call SP_UpdatePlanet(?,?,?,?,?,?)`, [
+    id,
     name,
-    radius,
     diameter,
     planetCircumference,
     digit,
@@ -58,9 +51,16 @@ const updatePlanetController = async (data) => {
   return;
 };
 
+const deletePlanetQuery = async (id) => {
+  const pool = await mysql.createPool(config.mysql);
+  await pool.query(`call SP_DeletePlanet(?)`, [id]);
+  return;
+};
+
 module.exports = {
   selectAllResultQuery,
   insertPlanetSurfaceQuery,
   getCurrentDigitQuery,
-  updatePlanetController,
+  updatePlanetQuery,
+  deletePlanetQuery,
 };

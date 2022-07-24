@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const router = express.Router();
 const config = require("./config");
 const dataRoutes = require("./routes");
+const path = __dirname + "/client/build";
 
 const app = express();
 app.use(cors());
@@ -19,6 +19,11 @@ app.use((req, res, next) => {
     "GET, POST, PATCH, DELETE, PUT"
   );
   next();
+});
+
+app.use(express.static(__dirname + "/client/build"));
+app.get("/", (req, res) => {
+  res.sendFile(path + "index.html");
 });
 
 app.use("/api", dataRoutes.routes);
