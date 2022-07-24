@@ -53,3 +53,9 @@ Front end libraries used:\
 react-highlight-words\
 5) rtk query\cf5 \cb1 \
 }
+
+Additional thoughts
+1) To convert the Pi Algorithm to code is quite challenging, required some mathematics knowledge to understand on how the Pi Algorithm work.
+2) This week time really is not in my favor, because has been a very busy week, hope can spend more time on this project to produce a better system.
+3) This project can be improve further by providing a notification feedback to user when they perform CRUD.
+4) Can improve in the frontend area to provide a picture or animated visual of the sun to make it more engaging and interactive.
