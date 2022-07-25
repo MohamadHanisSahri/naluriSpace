@@ -16,9 +16,13 @@ How to Run the System?
 	PORT = 3106
 
 	DATABASE = Naluri_Space
+	
 	DATABASE_HOST = localhost
+	
 	DATABASE_USER = root
+	
 	DATABASE_PASSWORD = your password
+	
 7) make sure to set the details (etc: password, host, user) of .env file to follow your MySql server credentials.
 8) open terminal and navigate to server folder and run "npm start".
 9) The system can be access at http://localhost:3106/
