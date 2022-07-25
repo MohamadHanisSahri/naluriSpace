@@ -1,7 +1,7 @@
 How to use this system?
 1) This system use  Chudnovsky Algorithm to calculate the PI.
-2) If you add a planet that already exist in datable, it will increase the Pi accuracy instead and give a new value base on new accuracy.
-3) If you add a new planet that not exist in datable yet, it will calculate Pi value with accuracy of digit 1.
+2) If you add a planet that already exist in datatable, it will increase the Pi accuracy instead and give a new value base on new accuracy.
+3) If you add a new planet that not exist in datatable yet, it will calculate Pi value with accuracy of digit 1.
 
 How to Run the System?
 1) clone the project.
@@ -10,6 +10,7 @@ How to Run the System?
 4) Right click on the created database on step 3 and select tools > restore database.
 5) Select database backup file "dump-Naluri_Space-202207250028.sql" in database folder.
 6) create .env file in the server root folder and set:
+
 	NODE_ENV=development
 
 	PORT = 3106
@@ -38,7 +39,6 @@ Front end libraries used:
 3) ant
 4) react-highlight-words
 5) rtk query
-}
 
 Additional thoughts
 1) To convert the Pi Algorithm to code is quite challenging, required some mathematics knowledge to understand on how the Pi Algorithm work.
