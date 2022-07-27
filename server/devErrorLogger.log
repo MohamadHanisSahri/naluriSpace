@@ -86,3 +86,33 @@
 2022-07-25 00:08:32 [31merror[39m: TypeError: Cannot read properties of undefined (reading 'Pi_Digit')
     at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:89:36)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-27 22:12:00 [31merror[39m: TypeError: Cannot read properties of undefined (reading 'Pi_Digit')
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:89:36)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-27 22:12:00 [31merror[39m: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at new NodeError (node:internal/errors:371:5)
+    at ServerResponse.setHeader (node:_http_outgoing:576:11)
+    at ServerResponse.header (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/response.js:794:10)
+    at ServerResponse.send (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/response.js:174:12)
+    at ServerResponse.json (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/response.js:278:15)
+    at ServerResponse.send (/Users/mac/Development/naluriSpace/server/node_modules/express/lib/response.js:162:21)
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:113:10)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-27 22:48:29 [31merror[39m: TypeError: dataModel.updatePlanetQuerya is not a function
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:132:21)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-27 22:49:06 [31merror[39m: TypeError: dataModel.updatePlanetQuerya is not a function
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:132:21)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-27 22:51:22 [31merror[39m: TypeError: dataModel.updatePlanetQuerya is not a function
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:132:21)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-27 22:52:33 [31merror[39m: TypeError: dataModel.updatePlanetQuerya is not a function
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:132:21)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-27 22:53:12 [31merror[39m: TypeError: dataModel.updatePlanetQuerya is not a function
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:132:21)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2022-07-28 01:20:19 [31merror[39m: TypeError: dataModel.updatePlanetQuerya is not a function
+    at insertPlanetIncrementController (/Users/mac/Development/naluriSpace/server/controller/index.js:132:21)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)

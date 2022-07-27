@@ -5,10 +5,10 @@ const logger = require("../logger");
 const selectAllResultController = async (req, res, next) => {
   try {
     const getData = await dataModel.selectAllResultQuery();
-    res.send(getData);
+    res.status(200).send(getData);
   } catch (error) {
     logger.error(error);
-    res.status(400).send(error.message);
+    res.status(400).send({ errorMessage: "Failed to get planet list!" });
   }
 };
 
@@ -86,11 +86,14 @@ const insertPlanetIncrementController = async (req, res, next) => {
   try {
     planetExist = await dataModel.getCurrentDigitQuery(planetData.name);
     console.log(planetExist, "planetExist");
-    planetExistDigit = planetExist.Pi_Digit;
-    planetExistId = planetExist.Planet_ID;
+    if (planetExist) {
+      planetExistDigit = planetExist.Pi_Digit;
+      planetExistId = planetExist.Planet_ID;
+    }
   } catch (error) {
     logger.error(error);
     console.log(error.message);
+    res.status(400).send({ errorMessage: "Something went wrong!" });
   }
 
   if (!planetExist) {
@@ -107,10 +110,13 @@ const insertPlanetIncrementController = async (req, res, next) => {
         digit: 1,
         piValueApproximation,
       });
-      res.status(200).send("successfully saved new data");
+      res
+        .status(200)
+        .send({ successMessage: "Successfully saved new planet!" });
     } catch (error) {
       logger.error(error);
       console.log(error.message);
+      res.status(400).send({ errorMessage: "Failed to save the data!" });
     }
     return;
   }
@@ -131,11 +137,16 @@ const insertPlanetIncrementController = async (req, res, next) => {
       digit: incrDigit,
       piValueApproximation,
     });
-    res.status(200).send("successfully updated");
+    res.status(200).send({
+      successMessage:
+        "Planet is already exist, we update the PI accuracy instead!",
+    });
   } catch (error) {
     logger.error(error);
     console.log(error.message);
-    res.status(400).send(error.message);
+    res.status(400).send({
+      errorMessage: "Planet already exist but we failed to update the data!",
+    });
   }
 };
 

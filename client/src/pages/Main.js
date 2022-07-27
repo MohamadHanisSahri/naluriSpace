@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "antd/dist/antd.css";
 import "./index.css";
-import { Button, Layout, Modal, Form, Input, InputNumber } from "antd";
+import {
+  Button,
+  Layout,
+  Modal,
+  Form,
+  Input,
+  InputNumber,
+  Spin,
+  notification,
+} from "antd";
 import logo from "../assets/NaluriLogo.png";
 import TableMaster from "../components/table/tableMaster";
 import {
@@ -16,16 +25,51 @@ const { Header, Content, Footer } = Layout;
 
 const Main = () => {
   const [form] = Form.useForm();
-  const { data: allPlanet } = useGetAllPlanetQuery();
-  const [postPlanet] = usePostPlanetMutation();
-  const [putPlanet] = usePutPlanetMutation();
-  const [deletePlanet] = useDeletePlanetMutation();
+  const {
+    data: allPlanet,
+    isSuccess: getPlanetsIsSuccess,
+    isLoading: getPlanetsIsLoading,
+    isError: getPlanetsIsError,
+    error: getPlanetsError,
+  } = useGetAllPlanetQuery();
+  const [
+    postPlanet,
+    {
+      data: postPlanetData,
+      isSuccess: postPlanetIsSuccess,
+      isError: postPlanetIsError,
+      error: postPlanetError,
+      isLoading: postPlanetIsLoading,
+    },
+  ] = usePostPlanetMutation();
+  const [
+    putPlanet,
+    {
+      isSuccess: putPlanetIsSuccess,
+      data: putPlanetData,
+      isLoading: putPlanetIsLoading,
+      isError: putPlanetIsError,
+      error: putPlanetError,
+    },
+  ] = usePutPlanetMutation();
+  const [
+    deletePlanet,
+    {
+      data: deletePlanetData,
+      isSuccess: deletePlanetIsSuccess,
+      isLoading: deletePlanetIsLoading,
+      isError: deletePlanetIsError,
+      error: deletePlanetError,
+    },
+  ] = useDeletePlanetMutation();
   const [planetNameState, setPlanetNameState] = useState("");
   const [planetIdState, setPlanetIdState] = useState("");
   const [planetDiameterState, setPlanetDiameterState] = useState("");
   const [planetCircumferenceState, setPlanetCircumferenceState] = useState("");
   const [piDigitState, setPiDigitState] = useState("");
   const [piValueApproxState, setPiValueApproxState] = useState("");
+  const [spinLoadingState, setSpinLoadingState] = useState(false);
+  const componentFirstLoad = useRef(true);
 
   // ------------------------------------------------------------------Delete
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -104,6 +148,98 @@ const Main = () => {
     calculate: {},
   };
   /* eslint-enable no-template-curly-in-string */
+
+  useEffect(() => {
+    if (componentFirstLoad.current) {
+      componentFirstLoad.current = false;
+      return;
+    }
+    if (getPlanetsIsLoading) {
+      setSpinLoadingState(true);
+    }
+    if (getPlanetsIsSuccess) {
+      setSpinLoadingState(false);
+    }
+    if (getPlanetsIsError) {
+      notification["error"]({
+        message: "Error Occur!",
+        description: `${getPlanetsError.data.errorMessage}`,
+      });
+      setSpinLoadingState(false);
+    }
+  }, [getPlanetsIsLoading, getPlanetsIsSuccess, getPlanetsIsError]);
+
+  useEffect(() => {
+    if (componentFirstLoad.current) {
+      componentFirstLoad.current = false;
+      return;
+    }
+    if (putPlanetIsLoading) {
+      setSpinLoadingState(true);
+    }
+    if (putPlanetIsSuccess) {
+      notification["success"]({
+        message: "Successfull!",
+        description: `${putPlanetData.successMessage}`,
+      });
+      setSpinLoadingState(false);
+    }
+    if (putPlanetIsError) {
+      notification["error"]({
+        message: "Error Occur!",
+        description: `${putPlanetError.data.errorMessage}`,
+      });
+      setSpinLoadingState(false);
+    }
+  }, [putPlanetIsLoading, putPlanetIsSuccess, putPlanetIsError]);
+
+  useEffect(() => {
+    if (componentFirstLoad.current) {
+      componentFirstLoad.current = false;
+      return;
+    }
+    if (deletePlanetIsLoading) {
+      setSpinLoadingState(true);
+    }
+    if (deletePlanetIsSuccess) {
+      notification["success"]({
+        message: "Successfull!",
+        description: `${deletePlanetData.successMessage}`,
+      });
+      setSpinLoadingState(false);
+    }
+    if (deletePlanetIsError) {
+      notification["error"]({
+        message: "Error Occur!",
+        description: `${deletePlanetError.data.errorMessage}`,
+      });
+      setSpinLoadingState(false);
+    }
+  }, [deletePlanetIsLoading, deletePlanetIsSuccess, deletePlanetIsError]);
+
+  useEffect(() => {
+    if (componentFirstLoad.current) {
+      componentFirstLoad.current = false;
+      return;
+    }
+    if (postPlanetIsLoading) {
+      setSpinLoadingState(true);
+    }
+    if (postPlanetIsSuccess) {
+      notification["success"]({
+        message: "Successfull!",
+        description: `${postPlanetData.successMessage}`,
+      });
+      setSpinLoadingState(false);
+    }
+    if (postPlanetIsError) {
+      notification["error"]({
+        message: "Error Occur!",
+        description: `${postPlanetError.data.errorMessage}`,
+      });
+      setSpinLoadingState(false);
+    }
+  }, [postPlanetIsLoading, postPlanetIsError, postPlanetIsSuccess]);
 
   useEffect(() => {
     form.setFieldsValue({
@@ -302,13 +438,15 @@ const Main = () => {
             >
               Add New Discovered Planet
             </Button>
-            <TableMaster
-              dataSource={allPlanet}
-              addModal={showAddModal}
-              editModal={showEditModal}
-              viewModal={showViewModal}
-              deleteModal={showDeleteModal}
-            />
+            <Spin tip="Updating..." spinning={spinLoadingState}>
+              <TableMaster
+                dataSource={allPlanet}
+                addModal={showAddModal}
+                editModal={showEditModal}
+                viewModal={showViewModal}
+                deleteModal={showDeleteModal}
+              />
+            </Spin>
           </div>
         </Content>
         <Footer
