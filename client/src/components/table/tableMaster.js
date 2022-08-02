@@ -1,6 +1,6 @@
 import React from "react";
 import "antd/dist/antd.css";
-import { Table, Space, Button, Modal, Form, Input, InputNumber } from "antd";
+import { Table, Space, Button, Input } from "antd";
 import Highlighter from "react-highlight-words";
 import {
   SearchOutlined,
@@ -69,11 +69,6 @@ export default class TableMaster extends React.Component {
             .toLowerCase()
             .includes(value.toLowerCase())
         : "",
-    onFilterDropdownVisibleChange: (visible) => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
-      }
-    },
     render: (text) =>
       this.state.searchedColumn === dataIndex ? (
         <Highlighter
@@ -123,7 +118,7 @@ export default class TableMaster extends React.Component {
         ...this.getColumnSearchProps("Planet_Diameter"),
       },
       {
-        title: "Planet Ciscumference",
+        title: "Planet Circumference",
         dataIndex: "Planet_Circumference",
         key: "Planet_ID",
         filterSearch: true,

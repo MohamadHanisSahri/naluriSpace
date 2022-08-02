@@ -2,6 +2,175 @@ const dataModel = require("../model");
 const { computePI } = require("../computation/pi_digitComputation");
 const logger = require("../logger");
 
+// --------------------------------------------for pgsql
+
+const selectAllPlanetsController_PG = async (req, res, next) => {
+  try {
+    const getPlanets = await dataModel.selectAllPlanetsQuery_PG();
+    res.status(200).send(getPlanets.rows);
+  } catch (error) {
+    logger.error(error);
+    res.status(400).send({ errorMessage: "Failed to get planet list!" });
+  }
+};
+
+const insertPiCurrentValueController_PGSQL = async (req, res, next) => {
+  try {
+    const data = req.body;
+    console.log(data, "pg insert current pi value");
+    await dataModel.insertPiCurrentValueQuery_PGSQL(data);
+    res
+      .status(200)
+      .send({ successMessage: "Pi current value saved successfully!" });
+  } catch (error) {
+    logger.error(error);
+    res.status(400).send({ errorMessage: "Failed to save Pi current value!" });
+  }
+};
+
+const insertPlanetController_PGSQL = async (req, res, next) => {
+  const data = req.body;
+  const { planet_name, planet_diameter } = data;
+  let planetExist = false;
+  let piCurrentId;
+  let currentPiDigit;
+  let valueApproximation;
+  let circumference;
+
+  try {
+    planetExist = await findPlanetController_PGSQL(planet_name);
+    if (planetExist && planetExist.length > 0) {
+      res.status(200).send({ successMessage: "Planet already exist!" });
+      return;
+    }
+  } catch (error) {
+    logger.error(error);
+    res.status(400).send({ errorMessage: "Failed to find existinf planet!" });
+  }
+
+  if (!planetExist || (planetExist && planetExist.length < 1)) {
+    try {
+      const piCurrentData = await getPiCurrentValueController_PGSQL();
+      piCurrentId = piCurrentData.pi_id;
+      currentPiDigit = piCurrentData.pi_current_digit + 1;
+      console.log(piCurrentData, "pi insert get pi current value");
+    } catch (error) {
+      logger.error(error);
+      res.status(400).send({ errorMessage: "Failed to get current pi value!" });
+    }
+
+    const calculatePi = await calculateCircumference({
+      diameter: planet_diameter,
+      digit: currentPiDigit,
+    });
+    const { planetCircumference, piValueApproximation } = calculatePi;
+    valueApproximation = piValueApproximation;
+    circumference = planetCircumference;
+
+    try {
+      await dataModel.insertPlanetQuery_PGSQL({
+        planet_name,
+        planet_diameter,
+        planet_circumference: circumference,
+        pi_digit: currentPiDigit,
+        pi_valueapproxiamtion: valueApproximation,
+      });
+      await updatePiCurrentValueController_PGSQL({
+        pi_id: piCurrentId,
+        pi_current_digit: currentPiDigit,
+        pi_current_valueapproximation: valueApproximation,
+      });
+      res
+        .status(200)
+        .send({ successMessage: "Successfully saved new planet data!" });
+    } catch (error) {
+      logger.error(error);
+      res.status(400).send({ errorMessage: "Failed to save planet data!" });
+    }
+  }
+};
+
+const findPlanetController_PGSQL = async (data) => {
+  const planetId = await dataModel.findPlanetQuery_PGSQL(data);
+  console.log(planetId.length, "return planetId controller");
+  return planetId;
+};
+
+const getPiCurrentValueController_PGSQL = async (data) => {
+  const piCurrentData = await dataModel.getPiCurrentValueQuery_PGSQL();
+  return piCurrentData;
+};
+
+const updatePiCurrentValueController_PGSQL = async (data) => {
+  await dataModel.updatePiCurrentValueQuery_PGSQL(data);
+  return;
+};
+
+const updatePlanetController_PGSQL = async (req, res, next) => {
+  const data = req.body;
+  const { planet_name, planet_diameter, planet_id } = data;
+  let piCurrentId;
+  let currentPiDigit;
+  let valueApproximation;
+  let circumference;
+  try {
+    const piCurrentData = await getPiCurrentValueController_PGSQL();
+    piCurrentId = piCurrentData.pi_id;
+    currentPiDigit = piCurrentData.pi_current_digit + 1;
+    console.log(currentPiDigit, "currentPiDigit");
+  } catch (error) {
+    logger.error(error);
+    res.status(400).send({ errorMessage: "Failed to get current pi value!" });
+  }
+  try {
+    const calculatePi = await calculateCircumference({
+      diameter: planet_diameter,
+      digit: currentPiDigit,
+    });
+    const { planetCircumference, piValueApproximation } = calculatePi;
+    valueApproximation = piValueApproximation;
+    circumference = planetCircumference;
+  } catch (error) {
+    logger.error(error);
+    res.status(400).send({ errorMessage: "Failed to calculate pi value!" });
+  }
+
+  try {
+    await dataModel.updatePlanetQuery_PGSQL({
+      planet_id,
+      planet_name,
+      planet_diameter,
+      planet_circumference: circumference,
+      pi_digit: currentPiDigit,
+      pi_valueapproximation: valueApproximation,
+    });
+    await updatePiCurrentValueController_PGSQL({
+      pi_id: piCurrentId,
+      pi_current_digit: currentPiDigit,
+      pi_current_valueapproximation: valueApproximation,
+    });
+    res
+      .status(200)
+      .send({ successMessage: "Successfully saved new planet data!" });
+  } catch (error) {
+    logger.error(error);
+    res.status(400).send({ errorMessage: "Failed to update planet data!" });
+  }
+};
+
+const deletePlanetController_PGSQL = async (req, res, next) => {
+  try {
+    const data = req.params.planetId;
+    await dataModel.deletePlanetQuery_PGSQL(data);
+    res.status(200).send({ successMessage: "Planet data has been deleted!" });
+  } catch (error) {
+    logger.error(error);
+    res.satus(400).send({ errorMessage: "Failed to delete planet data!" });
+  }
+};
+
+// --------------------------------------------for mysql
+
 const selectAllResultController = async (req, res, next) => {
   try {
     const getData = await dataModel.selectAllResultQuery();
@@ -84,7 +253,7 @@ const insertPlanetIncrementController = async (req, res, next) => {
   let planetExistDigit;
 
   try {
-    planetExist = await dataModel.getCurrentDigitQuery(planetData.name);
+    planetExist = await dataModel.getCurrentDigitQuery(planetData.planet_name);
     console.log(planetExist, "planetExist");
     if (planetExist) {
       planetExistDigit = planetExist.Pi_Digit;
@@ -99,13 +268,13 @@ const insertPlanetIncrementController = async (req, res, next) => {
   if (!planetExist) {
     try {
       const calculateResult = await calculateCircumference({
-        diameter: planetData.diameter,
+        diameter: planetData.planet_diameter,
         digit: 1,
       });
       const { planetCircumference, piValueApproximation } = calculateResult;
       await dataModel.insertPlanetSurfaceQuery({
-        name: planetData.name,
-        diameter: planetData.diameter,
+        name: planetData.planet_name,
+        diameter: planetData.planet_diameter,
         planetCircumference,
         digit: 1,
         piValueApproximation,
@@ -124,15 +293,15 @@ const insertPlanetIncrementController = async (req, res, next) => {
   try {
     const incrDigit = +planetExistDigit + 1;
     const calculationByIncrementDigitResult = await calculateCircumference({
-      diameter: planetData.diameter,
+      diameter: planetData.planet_diameter,
       digit: +incrDigit,
     });
     const { planetCircumference, piValueApproximation } =
       calculationByIncrementDigitResult;
     await dataModel.updatePlanetQuery({
       id: planetExistId,
-      name: planetData.name,
-      diameter: planetData.diameter,
+      name: planetData.planet_name,
+      diameter: planetData.planet_diameter,
       planetCircumference,
       digit: incrDigit,
       piValueApproximation,
@@ -200,8 +369,8 @@ const calculateCircumference = async (data) => {
   let planetCircumference;
   try {
     const { diameter, digit } = data;
-    const piValueApproximation = await +computePI(digit);
-    planetCircumference = await +(+diameter * +piValueApproximation);
+    const piValueApproximation = await computePI(digit);
+    planetCircumference = await (+diameter * +piValueApproximation);
     console.log(piValueApproximation, "piValueApproximation");
     const result = {
       piValueApproximation,
@@ -227,4 +396,10 @@ module.exports = {
   insertPlanetController,
   updatePlanetController,
   deletePlanetController,
+  selectAllPlanetsController_PG,
+  insertPiCurrentValueController_PGSQL,
+  insertPlanetController_PGSQL,
+  findPlanetController_PGSQL,
+  updatePlanetController_PGSQL,
+  deletePlanetController_PGSQL,
 };
